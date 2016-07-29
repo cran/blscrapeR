@@ -1,3 +1,26 @@
+# blscrapeR 0.4.2
+
+## New Features
+* Added stateName argument to get_bls_county() that allows user to specify a state or list of states.
+
+* Added stateName argument to map_bls_county() that allows user to specify state(s) to map.
+
+## Documentation
+* Added mapping vignette.
+
+* Added manual pages for the `county_map_data` and `state_map_data` internal data sets.
+
+## Data
+* Added tigris and broom packages to prep_maps.R in data-raw folder.
+
+## Bug Fixes
+* Fixed date argument in get_bls_county() and get_bls_state() to return the most recent date if argument is NULL.
+
+* Added error handling to map_bls_state() and map_bls_county().
+
+* Added tests for map_bls_state() and map_bls_county() to the /testthat directory.
+
+
 # blscrapeR 0.4.1
 
 ## New Features
@@ -14,7 +37,7 @@
 
 * Added documentation to get_bls_county() to explain the new date argument.
 
-* Added package vignetts.
+* Added package vignettes.
 
 
 # blscrapeR 0.4.0

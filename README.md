@@ -9,13 +9,19 @@ Designed to be a better API wrapper for the Bureau of Labor Statistics (BLS.) Th
 Install
 -------
 
+-   Stable version from CRAN:
+
+``` r
+install.packages("blscrapeR")
+```
+
 -   The latest development version from Github:
 
 ``` r
 devtools::install_github("keberwein/blscrapeR")
 ```
 
-Before getting started, you’ll probably want to head over to the BLS and [get set up](http://www.bls.gov/developers/api_faqs.htm) with an API key. While an API key is not required to use the package, the query limits are much higher if you have a key and you’ll have access to more data. Plus, it’s free (as in beer), so why not?
+Before getting started, you’ll probably want to head over to the BLS and [get set up](http://data.bls.gov/registrationEngine/) with an API key. While an API key is not required to use the package, the query limits are much higher if you have a key and you’ll have access to more data. Plus, it’s free (as in beer), so why not?
 
 Basic Usage
 -----------
@@ -40,7 +46,7 @@ tail(df, 5)
 API Keys
 --------
 
-You should consider [getting an API key](http://www.bls.gov/developers/api_faqs.htm) form the BLS. The package has a function to install your key in your `.Renviron` so you’ll only have to worry about it once. Plus, it will add extra security by not having your key hard-coded in your scripts for all the world to see.
+You should consider [getting an API key](http://data.bls.gov/registrationEngine/) form the BLS. The package has a function to install your key in your `.Renviron` so you’ll only have to worry about it once. Plus, it will add extra security by not having your key hard-coded in your scripts for all the world to see.
 
 ### From the BLS:
 
@@ -95,7 +101,7 @@ You should consider [getting an API key](http://www.bls.gov/developers/api_faqs.
 
 ``` r
 library(blscrapeR)
-set_bls_key("111111abc")
+set_bls_key("YOUR_KEY_IN_QUOTATIONS")
 # First time, relead your enviornment so you can use the key without restarting R.
 readRenviron("~/.Renviron")
 # You can check it with:
@@ -197,4 +203,4 @@ leaflet(data = leafmap) %>% addTiles() %>%
 
 **Note:** This is just a static image since the full map would not be as portable for the purpose of documentation.
 
-![](https://www.datascienceriot.com/wp-content/uploads/2016/07/blscrape_docfig2.png)
+![](https://www.datascienceriot.com/wp-content/uploads/2016/07/blscrape_docfig3-1.png)

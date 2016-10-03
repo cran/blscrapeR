@@ -1,7 +1,7 @@
 Package: blscrapeR
 Type: Package
 Title: An API Wrapper for the Bureau of Labor Statistics (BLS)
-Version: 0.4.2
+Version: 1.0.1
 Authors@R: person("Kris", "Eberwein", email = "eberwein@knights.ucf.edu",
                   role = c("aut", "cre"))
 Description: Scrapes various data from the Bureau of Labor Statistics, which is the statistical branch of the United States Department of Labor. The package has additional functions to help parse, analyze and visualize the data.
@@ -16,8 +16,8 @@ LazyData: true
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-07-29 12:21:41 UTC; kriseberwein
+Packaged: 2016-10-03 12:47:27 UTC; kriseberwein
 Author: Kris Eberwein [aut, cre]
 Maintainer: Kris Eberwein <eberwein@knights.ucf.edu>
 Repository: CRAN
-Date/Publication: 2016-07-29 18:27:04
+Date/Publication: 2016-10-03 22:58:18

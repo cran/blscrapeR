@@ -1,7 +1,7 @@
 ## ----setup, include=TRUE-------------------------------------------------
 
 ## ----eval=FALSE----------------------------------------------------------
-#  # Computer adn Information Systems Managers in Orlando, FL and San Jose, CA.
+#  # Computer and Information Systems Managers in Orlando, FL and San Jose, CA.
 #  # Orlando: "OEUM003674000000011302103"
 #  # San Jose: "OEUM004194000000011302108"
 #  library(blscrapeR)

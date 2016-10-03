@@ -60,7 +60,7 @@ head(us_map)
 #  
 #  # Slice the df down to only the variables we need and rename "fips" colunm
 #  # so I can get a cleaner merge later.
-#  df <- df[, c("unemployed_rate", "fips")]
+#  df <- subset(df, select = c("unemployed_rate", "fips"))
 #  colnames(df) <- c("unemployed_rate", "GEOID")
 #  
 #  # Merge df with spatial object.

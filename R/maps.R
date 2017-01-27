@@ -16,6 +16,8 @@
 #' @param stateName Optional argument if you only want to map a single state or a group of selected staes. The argument
 #' accepts state full state names in quotes.
 #' @param labtitle The main title label for your map passed as a string. The default is no title.
+#' @param projection Choices of map projection are "lambert" or "mercator". By default, the function selects Mercator for single states
+#' and Lambert for nationwide views.
 #' @seealso \url{https://cran.r-project.org/package=tigris}
 #' @examples \dontrun{
 #' # Download the most current month unemployment statistics on a county level.
@@ -39,14 +41,14 @@
 #'
 #'
 
-bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NULL){
+bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NULL, projection=NULL){
     if (is.null(fill_rate)){
         stop(message("Please specify a fill_rate in double quotes. What colunm in your data frame do you want to map?"))
     }
     # Set some dummy variables. This keeps CRAN check happy.
     map=long=lat=id=group=county_map_data=NULL
     # Load pre-formatted map for ggplot.
-    map <- blscrapeR::county_map_data
+
     # Unemployment statistics by county: Get and process data.
     # Check to see if user selected specific state(s).
     if (!is.null(stateName)){
@@ -56,6 +58,19 @@ bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NU
         state_check <- sapply(stateName, function(x) any(grepl(x, state_fips$state)))
         if(any(state_check==FALSE)){
             stop(message("Please make sure you state names are spelled correctly using full state names."))
+        }
+        # User Mercator projection for states unless the user overrides.
+        if (is.null(projection)){
+            map <- blscrapeR::county_map_merc
+        }else{
+            if (tolower(projection)=="lambert"){
+                map <- blscrapeR::county_map_data
+            }
+            if (tolower(projection)=="mercator"){
+                map <- blscrapeR::county_map_merc
+            }else{
+                message("Supported projections are Lambert and Mercator. A null projection argument returns Mercator for this function.")
+            }
         }
         # If state list is valid. Grab State FIPS codes from internal data set and subset map.
         # Add state_id to map frame
@@ -125,7 +140,7 @@ bls_map_state <- function(map_data, fill_rate=NULL, labtitle=NULL){
     }
     # Set some dummy variables. This keeps CRAN check happy.
     map=long=lat=id=group=state_map_data=state.name=NULL
-    #Maps by County
+    
     #Load pre-formatted map for ggplot.
     map <- blscrapeR::state_map_data
     #Unemployment statistics by county: Get and process data.

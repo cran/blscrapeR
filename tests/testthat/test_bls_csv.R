@@ -1,6 +1,4 @@
 library(blscrapeR)
-library(zoo)
-library(data.table)
 library(testthat)
 
 ### TEST DATA SOURCE FOR get_bls_county()
@@ -43,7 +41,7 @@ if (!is.null(stateName)){
         statelist[[s]] <- state_vals
     }
     
-    countyemp <- data.table::rbindlist(statelist)
+    countyemp <- do.call(rbind, statelist)
 }
 
 # Check for date or dates.
@@ -78,7 +76,7 @@ for (i in date_mth) {
     datalist[[i]] <- mth_vals
 }
 # Rebind.
-df <- data.table::rbindlist(datalist)
+df <- do.call(rbind, datalist)
 # Correct column data fromats.
 df$unemployed <- as.numeric(gsub(",", "", as.character(df$unemployed)))
 df$employed <- as.numeric(gsub(",", "", as.character(df$employed)))
@@ -106,12 +104,12 @@ dat <- readLines(seas)
 
 # If no date_mth is specified, find the latest month and return.
 # Not happy with this method. Would rather find max(month) in data. But data format is a bit crazy.
-if (isTRUE(any(grepl(format(zoo::as.yearmon(Sys.Date()-30), "%B %Y"), dat)))){
-    date_mth <- format(zoo::as.yearmon(Sys.Date()-30), "%B %Y")
+if (isTRUE(any(grepl(format(Sys.Date()-30, "%B %Y"), dat)))){
+    date_mth <- format(Sys.Date()-30, "%B %Y")
 }else{
-    if (isTRUE(any(grepl(format(zoo::as.yearmon(Sys.Date()-60), "%B %Y"), dat)))){
-        date_mth <- format(zoo::as.yearmon(Sys.Date()-60), "%B %Y")
-    }else{date_mth <- format(zoo::as.yearmon(Sys.Date()-90), "%B %Y")}
+    if (isTRUE(any(grepl(format(Sys.Date()-60, "%B %Y"), dat)))){
+        date_mth <- format(Sys.Date()-60, "%B %Y")
+    }else{date_mth <- format(Sys.Date()-90, "%B %Y")}
 }
 
 # Make an empty list for data frames and iterate in big nasty for loop.
@@ -142,7 +140,7 @@ for (i in date_mth) {
     # Put data frames into a list to be rebound later.                             
     datalist[[i]] <- cols
 }
-df <- data.table::rbindlist(datalist)
+df <- do.call(rbind, datalist)
 
 # Convert month colunm to ISO 8601 date format.
 df$month <- as.Date(paste('01', df$month), format = '%d %b %Y')

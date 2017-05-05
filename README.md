@@ -79,26 +79,76 @@ Advanced Usage
 
 Now that you have an API key installed, you can call your key in the package’s function arguments with `"BLS_KEY"`. Don't forget the quotes! If you just HAVE to have your key hard-coded in your scripts, you can also pass they key as a string.
 
+### Download Multiple BLS Series at Once
+
 ``` r
 library(blscrapeR)
+
+# Grab several data sets from the BLS at onece.
+# NOTE on series IDs: 
+# EMPLOYMENT LEVEL - Civilian labor force - LNS12000000
+# UNEMPLOYMENT LEVEL - Civilian labor force - LNS13000000
+# UNEMPLOYMENT RATE - Civilian labor force - LNS14000000
+df <- bls_api(c("LNS12000000", "LNS13000000", "LNS14000000"),
+              startyear = 2008, endyear = 2017) %>%
+    # Add time-series dates
+    dateCast()
+```
+
+``` r
+# Plot employment level
+library(ggplot2)
+gg1200 <- subset(df, seriesID=="LNS12000000")
+library(ggplot2)
+ggplot(gg1200, aes(x=date, y=value)) +
+    geom_line() +
+    labs(title = "Employment Level - Civ. Labor Force")
+```
+
+![](https://www.datascienceriot.com/wp-content/uploads/2017/02/emplevelggreadme.png)
+
+``` r
+# Plot unemployment level
+gg1300 <- subset(df, seriesID=="LNS13000000")
+library(ggplot2)
+ggplot(gg1300, aes(x=date, y=value)) +
+    geom_line() +
+    labs(title = "Unemployment Level - Civ. Labor Force")
+```
+
+![](https://www.datascienceriot.com/wp-content/uploads/2017/02/unemplevggreadme.png)
+
+``` r
+# Plot unemployment rate
+gg1400 <- subset(df, seriesID=="LNS14000000")
+library(ggplot2)
+ggplot(gg1400, aes(x=date, y=value)) +
+    geom_line() +
+    labs(title = "Unemployment Rate - Civ. Labor Force")
+```
+
+![](https://www.datascienceriot.com/wp-content/uploads/2017/02/unempggreadme.png)
+
+### Median Weekly Earnings
+
+``` r
+library(blscrapeR)
+library(tidyr)
 # Median Usual Weekly Earnings by Occupation, Unadjusted Second Quartile.
 # In current dollars
-df <- bls_api(c("LEU0254530800", "LEU0254530600"),
-                startyear = 2000, endyear = 2015,
-                registrationKey = "BLS_KEY") %>%
+df <- bls_api(c("LEU0254530800", "LEU0254530600"), startyear = 2000, endyear = 2015) %>%
+    spread(seriesID, value) %>%
     dateCast()
 ```
 
 ``` r
 # A little help from ggplot2!
 library(ggplot2)
-ggplot(df, aes(x=date, y=value, color=seriesID)) +
-    geom_line() +
-    labs(title = "Median Weekly Earnings by Occupation") +
-    theme(legend.position="top") +
-    scale_color_discrete(name="Occupation",
-        breaks=c("LEU0254530800", "LEU0254530600"),
-        labels=c("Database Admins.", "Software Devs."))
+ggplot(data = df, aes(x = date)) + 
+    geom_line(aes(y = LEU0254530800, color = "Database Admins.")) +
+    geom_line(aes(y = LEU0254530600, color = "Software Devs.")) + 
+    labs(title = "Median Weekly Earnings by Occupation") + ylab("value") +
+    theme(legend.position="top", plot.title = element_text(hjust = 0.5)) 
 ```
 
 ![](https://www.datascienceriot.com/wp-content/uploads/2016/07/blscrape_docfig1.png)

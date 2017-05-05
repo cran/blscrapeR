@@ -1,3 +1,21 @@
+# blscrapeR 2.1.4
+
+## New Features
+* Added total non-farm employment as a "quick function."
+
+* Added a dt_format argument to the dateCast() function.
+
+# blscrapeR 2.1.3
+
+## New Features
+* Added the compound pipe operator from the magrittr package to exported functions.
+
+## Enhancements
+* Added urlExists as a utility function for more robust error handling.
+
+* Added try/catch to url downloads.
+
+
 # blscrapeR 2.1.2
 ## New Features
 * The ability to select custom choropleth colors with all map functions.

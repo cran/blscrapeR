@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2017-02-03" />
+<meta name="date" content="2017-05-05" />
 
 <title>BLS API Inflation and Prices</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Inflation and Prices</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2017-02-03</em></h4>
+<h4 class="date"><em>2017-05-05</em></h4>
 
 
 
@@ -130,11 +130,11 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="st
 <span class="co"># Set base value.</span>
 base_value &lt;-<span class="st"> </span><span class="dv">100</span>
 <span class="co"># Get CPI from base period (January 2014).</span>
-base_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year==<span class="dv">2014</span> &amp;<span class="st"> </span>periodName==<span class="st">&quot;January&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
+base_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year<span class="op">==</span><span class="dv">2014</span> <span class="op">&amp;</span><span class="st"> </span>periodName<span class="op">==</span><span class="st">&quot;January&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
 <span class="co"># Get the CPI for the new period (February 2015).</span>
-new_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year==<span class="dv">2015</span> &amp;<span class="st"> </span>periodName==<span class="st">&quot;February&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
+new_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year<span class="op">==</span><span class="dv">2015</span> <span class="op">&amp;</span><span class="st"> </span>periodName<span class="op">==</span><span class="st">&quot;February&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
 <span class="co"># Calculate the updated value of our $100 investment.</span>
-(base_value /<span class="st"> </span>base_cpi) *<span class="st"> </span>new_cpi
+(base_value <span class="op">/</span><span class="st"> </span>base_cpi) <span class="op">*</span><span class="st"> </span>new_cpi
 <span class="co"># Woops, looks like we lost a penny!</span></code></pre></div>
 <p><strong>Disclaimer:</strong> Escalation is normally formulated by lawyers and bankers, the author(s) of this package are neither, so the above should only be considered a code example.</p>
 </div>

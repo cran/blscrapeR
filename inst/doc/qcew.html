@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2017-02-03" />
+<meta name="date" content="2017-05-05" />
 
 <title>Quarterly Census of Employment and Wages API</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Quarterly Census of Employment and Wages API</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2017-02-03</em></h4>
+<h4 class="date"><em>2017-05-05</em></h4>
 
 
 
@@ -98,17 +98,17 @@ dat &lt;-<span class="st"> </span><span class="kw">qcew_api</span>(<span class="
 <p>The <code>qcew_api()</code> function accepts various codes in the <code>sliceCode</code> argument. The <code>sliceCode</code> that is used will depend on the slice we wish to see. There are three built-in data sets to help with our <code>sliceCode</code> selections.</p>
 <div id="area-description-data-fips-codes" class="section level4">
 <h4>Area Description Data (FIPS codes)</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">areaCodes &lt;-<span class="st"> </span>blscrapeR::area_titles
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">areaCodes &lt;-<span class="st"> </span>blscrapeR<span class="op">::</span>area_titles
 <span class="kw">head</span>(areaCodes)</code></pre></div>
 </div>
 <div id="industry-description-data-niacs-codes" class="section level4">
 <h4>Industry Description Data (NIACS codes)</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">industryCodes &lt;-<span class="st"> </span>blscrapeR::niacs
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">industryCodes &lt;-<span class="st"> </span>blscrapeR<span class="op">::</span>niacs
 <span class="kw">head</span>(industryCodes)</code></pre></div>
 </div>
 <div id="industry-size-data-size-codes" class="section level4">
 <h4>Industry Size Data (Size codes)</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sizeCodes &lt;-<span class="st"> </span>blscrapeR::size_titles
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sizeCodes &lt;-<span class="st"> </span>blscrapeR<span class="op">::</span>size_titles
 <span class="kw">head</span>(sizeCodes)</code></pre></div>
 </div>
 </div>

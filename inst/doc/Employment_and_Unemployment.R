@@ -6,46 +6,48 @@
 #  # http://www.bls.gov/news.release/empsit.t15.htm
 #  library(blscrapeR)
 #  library(ggplot2)
-#  df <- bls_api(c("LNS13327709", "LNS14000000"),
-#                 startyear = 2000, endyear = 2015)
+#  library(tidyr)
+#  df <- bls_api(c("LNS13327709", "LNS14000000"), startyear = 2000, endyear = 2015) %>%
+#      spread(seriesID, value) %>%
+#      dateCast()
+#  
 #  tail(df)
 #  
-#  ggplot(data=df, aes(x = date, y = value, color=seriesID)) +
-#      geom_line() +
-#      labs(title = "US Unemployment") +
-#      theme(legend.position="top") +
-#      scale_color_discrete(breaks=c("LNS13327709", "LNS14000000"),
-#                           labels=c("U-6", "U-3"))
+#  ggplot(data = df, aes(x = date)) +
+#      geom_line(aes(y = LNS14000000, color = "U-3")) +
+#      geom_line(aes(y = LNS13327709, color = "U-6")) +
+#      labs(title = "US Unemployment") + ylab("Unemployment Rate")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(blscrapeR)
 #  library(ggplot2)
-#  df <- bls_api(c("LEU0254530800", "LEU0254530600"),
-#                  startyear = 2000, endyear = 2015)
+#  library(tidyr)
+#  df <- bls_api(c("LEU0254530800", "LEU0254530600"), startyear = 2000, endyear = 2015) %>%
+#      spread(seriesID, value) %>%
+#      dateCast()
+#  
 #  tail(df)
 #  
-#  ggplot(df, aes(x=date, y=value, color=seriesID)) +
-#      geom_line() +
-#      labs(title = "Median Pay by Occupation") +
-#      theme(legend.position="top") +
-#      scale_color_discrete(name="Occupation",
-#          breaks=c("LEU0254530800", "LEU0254530600"),
-#          labels=c("Database Admins.", "Software Devs."))
+#  ggplot(data = df, aes(x = date)) +
+#      geom_line(aes(y = LEU0254530800, color = "Database Admins.")) +
+#      geom_line(aes(y = LEU0254530600, color = "Software Devs.")) +
+#      labs(title = "Median Pay by Occupation") + ylab("Median Weekly Pay USD")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(blscrapeR)
 #  library(ggplot2)
-#  df <- bls_api(c("TUU10101AA01014236", "TUU10101AA01013951"),
-#                  startyear = 2005, endyear = 2015)
+#  library(tidyr)
+#  
+#  df <- bls_api(c("TUU10101AA01014236", "TUU10101AA01013951"), startyear = 2005, endyear = 2015) %>%
+#      spread(seriesID, value) %>%
+#      dateCast()
+#  
 #  tail(df)
 #  
-#  ggplot(df, aes(x=date, y=value, color=seriesID)) +
-#      geom_line() +
-#      labs(title = "Time Use (in hours)") +
-#      theme(legend.position="top") +
-#      scale_color_discrete(name="Activity",
-#          breaks=c("TUU10101AA01014236", "TUU10101AA01013951"),
-#          labels=c("Watching TV", "Communicating"))
+#  ggplot(data = df, aes(x = date)) +
+#      geom_line(aes(y = TUU10101AA01014236, color = "Watching TV")) +
+#      geom_line(aes(y = TUU10101AA01013951, color = "Communicating")) +
+#      labs(title = "Time Use (in hours)t") + ylab("Time Use")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  library(blscrapeR)
@@ -60,15 +62,17 @@
 ## ----eval=FALSE----------------------------------------------------------
 #  library(blscrapeR)
 #  library(ggplot2)
-#  df <- bls_api(c("ENU0608510010", "ENU1209510010"),
-#                  startyear = 2005, endyear = 2015)
+#  library(tidyr)
+#  
+#  df <- bls_api(c("ENU0608510010", "ENU1209510010"), startyear = 2005, endyear = 2015) %>%
+#      spread(seriesID, value) %>%
+#      dateCast()
+#  
 #  tail(df)
 #  
-#  ggplot(df, aes(x=date, y=value, color=seriesID)) +
-#      geom_line() +
-#      labs(title = "Total Employed by County") +
-#      theme(legend.position="top") +
-#      scale_color_discrete(name="Activity",
-#          breaks=c("ENU0608510010", "ENU1209510010"),
-#          labels=c("Santa Clara, CA", "Orange, FL"))
+#  ggplot(data = df, aes(x = date)) +
+#      geom_line(aes(y = ENU0608510010, color = "Santa Clara, CA")) +
+#      geom_line(aes(y = ENU1209510010, color = "Orange, FL")) +
+#      labs(title = "Total Employed by County") + ylab("Total Employed")
+#  
 

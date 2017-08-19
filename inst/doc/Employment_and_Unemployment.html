@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2017-06-19" />
+<meta name="date" content="2017-08-19" />
 
 <title>BLS API Employment and Unemployment</title>
 
@@ -70,15 +70,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Employment and Unemployment</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2017-06-19</em></h4>
+<h4 class="date"><em>2017-08-19</em></h4>
 
 
 
 <div id="the-bls-data-landscape" class="section level2">
 <h2>The BLS Data Landscape</h2>
 <p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="http://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
-<div id="catagories-you-will-find-useful-are" class="section level3">
-<h3>Catagories you will find useful are:</h3>
+</div>
+<div id="catagories-you-will-find-useful-are" class="section level2">
+<h2>Catagories you will find useful are:</h2>
 <ul>
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ln">CPS</a> (Current Population Survey) includes employment and unemployment rates nationally.</p></li>
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?la">LAUS</a> (Local Area Unemployment Statistics)</p></li>
@@ -90,65 +91,48 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?tu">ATUS</a> (American Time Use Survey)</p></li>
 </ul>
 <p><em>Note: The hyperlinks above link to lists of the most popular seriesIDs, but are only a small sample of all the data tracked by the BLS.</em></p>
-<div id="cps" class="section level4">
-<h4>CPS</h4>
+</div>
+<div id="cps" class="section level2">
+<h2>CPS</h2>
 <p>An example of employment statistics from is a comparison of two different <a href="http://www.bls.gov/news.release/empsit.t15.htm">unemployment rates</a> from the CPS.</p>
 <p>Below is the U-3 Unemployment Rate (the “official” rate) vs. the U-6 Unemployment Rate, which includes all persons marginally attached to the labor force, plus total employed part time for economic reasons, plus all persons marginally attached to the labor force.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># U3 Unemployment vs. U6 Unemployment</span>
 <span class="co"># More information on unemployment rates here:</span>
 <span class="co"># http://www.bls.gov/news.release/empsit.t15.htm</span>
 <span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tidyverse)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LNS13327709&quot;</span>, <span class="st">&quot;LNS14000000&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">dateCast</span>()
 
-<span class="kw">tail</span>(df)
-
-<span class="kw">ggplot</span>(<span class="dt">data =</span> df, <span class="kw">aes</span>(<span class="dt">x =</span> date)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> LNS14000000, <span class="dt">color =</span> <span class="st">&quot;U-3&quot;</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> LNS13327709, <span class="dt">color =</span> <span class="st">&quot;U-6&quot;</span>)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;US Unemployment&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Unemployment Rate&quot;</span>) </code></pre></div>
+<span class="kw">tail</span>(df)</code></pre></div>
 <p>Another example from the CPS deals with median weekly earnings by occupation. In this case, database administrators vs. software developers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tidyverse)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LEU0254530800&quot;</span>, <span class="st">&quot;LEU0254530600&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">dateCast</span>()
 
-<span class="kw">tail</span>(df)
-
-<span class="kw">ggplot</span>(<span class="dt">data =</span> df, <span class="kw">aes</span>(<span class="dt">x =</span> date)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> LEU0254530800, <span class="dt">color =</span> <span class="st">&quot;Database Admins.&quot;</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> LEU0254530600, <span class="dt">color =</span> <span class="st">&quot;Software Devs.&quot;</span>)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Median Pay by Occupation&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Median Weekly Pay USD&quot;</span>)</code></pre></div>
+<span class="kw">tail</span>(df)</code></pre></div>
 </div>
-<div id="atus" class="section level4">
-<h4>ATUS</h4>
+<div id="atus" class="section level2">
+<h2>ATUS</h2>
 <p>The ATUS is a survey of how Americans use their time. A simple analysis could be how much time Americans spend watching television vs. how much time they spend socializing and communicating in a given day.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tidyverse)
 
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;TUU10101AA01014236&quot;</span>, <span class="st">&quot;TUU10101AA01013951&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">dateCast</span>()
 
-<span class="kw">tail</span>(df)
-
-<span class="kw">ggplot</span>(<span class="dt">data =</span> df, <span class="kw">aes</span>(<span class="dt">x =</span> date)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> TUU10101AA01014236, <span class="dt">color =</span> <span class="st">&quot;Watching TV&quot;</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> TUU10101AA01013951, <span class="dt">color =</span> <span class="st">&quot;Communicating&quot;</span>)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Time Use (in hours)t&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Time Use&quot;</span>)</code></pre></div>
+<span class="kw">tail</span>(df)</code></pre></div>
 </div>
-<div id="ces" class="section level4">
-<h4>CES</h4>
+<div id="ces" class="section level2">
+<h2>CES</h2>
 <p>An example from the CES would be to calculate the penetration rate of a certain industry. We can do this by dividing the number of people employed in an industry by the total employed workforce.</p>
 <p>For example, to determine the workforce penetration rate for the Education and Health Services industry in the state of Alabama:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tidyverse)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;SMS01000000000000001&quot;</span>, <span class="st">&quot;SMS01000006500000001&quot;</span>),
                 <span class="dt">startyear =</span> <span class="dv">2006</span>, <span class="dt">endyear =</span> <span class="dv">2016</span>)
 
@@ -156,25 +140,17 @@ df &lt;-<span class="st"> </span><span class="kw">spread</span>(df, seriesID, va
 df<span class="op">$</span>penetration_rt &lt;-<span class="st"> </span>df<span class="op">$</span>SMS01000006500000001 <span class="op">/</span><span class="st"> </span>df<span class="op">$</span>SMS01000000000000001
 <span class="kw">tail</span>(df)</code></pre></div>
 </div>
-<div id="qcew" class="section level4">
-<h4>QCEW</h4>
+<div id="qcew" class="section level2">
+<h2>QCEW</h2>
 <p>The QCEW is a quarterly report that focuses primarily on specific cities, states and industries. For example, we could look at the total workforce in the Software Publishing industry in Santa Clara County, CA as compared to Orange County, FL:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tidyverse)
 
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;ENU0608510010&quot;</span>, <span class="st">&quot;ENU1209510010&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">dateCast</span>()
 
-<span class="kw">tail</span>(df)
-
-<span class="kw">ggplot</span>(<span class="dt">data =</span> df, <span class="kw">aes</span>(<span class="dt">x =</span> date)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ENU0608510010, <span class="dt">color =</span> <span class="st">&quot;Santa Clara, CA&quot;</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ENU1209510010, <span class="dt">color =</span> <span class="st">&quot;Orange, FL&quot;</span>)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Total Employed by County&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Total Employed&quot;</span>)</code></pre></div>
-</div>
-</div>
+<span class="kw">tail</span>(df)</code></pre></div>
 </div>
 
 

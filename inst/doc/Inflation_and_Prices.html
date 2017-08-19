@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2017-06-19" />
+<meta name="date" content="2017-08-19" />
 
 <title>BLS API Inflation and Prices</title>
 
@@ -70,17 +70,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Inflation and Prices</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2017-06-19</em></h4>
+<h4 class="date"><em>2017-08-19</em></h4>
 
 
 
 <div id="the-bls-data-landscape" class="section level2">
 <h2>The BLS Data Landscape</h2>
 <p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="http://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
-<div id="catagories-you-will-find-useful-are" class="section level3">
-<h3>Catagories you will find useful are:</h3>
-<div id="cpi-consumer-price-index" class="section level4">
-<h4>CPI (Consumer Price Index)</h4>
+</div>
+<div id="catagories-you-will-find-useful-are" class="section level2">
+<h2>Catagories you will find useful are:</h2>
+</div>
+<div id="cpi-consumer-price-index" class="section level2">
+<h2>CPI (Consumer Price Index)</h2>
 <p>The CPI data tracks the prices paid by urban consumers for a representative basket of goods and services. The CPI is the primary metric used to calculate inflation.</p>
 <ul>
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?cu">CPI All Urban Consumers (Current Series)</a></p></li>
@@ -88,7 +90,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?su">CPI All Urban Consumers (Chained CPI)</a></p></li>
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ap">CPI Average Price Data</a></p></li>
 </ul>
-</div>
 <div id="ppi-producer-price-index" class="section level4">
 <h4>PPI (Producer Price Index)</h4>
 <p>The PPI data tracks the average change in selling prices received by domestic producers for their output over time.</p>
@@ -97,15 +98,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?wp">PPI Commodity Data</a> includes “headline” FD-ID indexes.</p></li>
 </ul>
 </div>
-<div id="ipp-international-price-program" class="section level4">
-<h4>IPP (International Price Program)</h4>
+</div>
+<div id="ipp-international-price-program" class="section level2">
+<h2>IPP (International Price Program)</h2>
 <ul>
 <li><a href="http://data.bls.gov/cgi-bin/surveymost?ei">IPP Import/Export Price Indexes</a></li>
 </ul>
 <p><em>Note: The hyperlinks above link to lists of the most popular seriesIDs, but are only a small sample of all the data tracked by the BLS.</em></p>
 </div>
-<div id="cpi-tracking-inflation" class="section level4">
-<h4>CPI: Tracking Inflation</h4>
+<div id="cpi-tracking-inflation" class="section level2">
+<h2>CPI: Tracking Inflation</h2>
 <p>Although there are many measures of inflation, the CPI’s “Consumer Price Index for All Urban Consumers: All Items” is normally the headline inflation rate one would hear about on the news (<a href="https://fred.stlouisfed.org/series/CPIAUCSL">see FRED</a>). For other measures of inflation, the <a href="http://www.bls.gov/cpi/cpifaq.htm#Question_12">BLS FAQ</a> on the subject is worth reading.</p>
 <p>Getting these data from the <code>blscrapeR</code> package is easy enough:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
@@ -119,8 +121,8 @@ df &lt;-<span class="st"> </span><span class="kw">inflation_adjust</span>(<span 
 <span class="kw">tail</span>(df)</code></pre></div>
 <p>If we want to check our results, we can head over to the CPI <a href="http://data.bls.gov/cgi-bin/cpicalc.pl">Inflation Calculator</a> on the BLS website.</p>
 </div>
-<div id="cpi-tracking-escalation" class="section level4">
-<h4>CPI: Tracking Escalation</h4>
+<div id="cpi-tracking-escalation" class="section level2">
+<h2>CPI: Tracking Escalation</h2>
 <p>Another typical use of the CPI is to determine price escalation. This is especially common in escalation contracts. While there are many different ways one could calculate escalation below is a simple example. Note: the BLS recommends using non-seasonally adjusted data for escalation calculations.</p>
 <p>Suppose we want the price escalation of $100 investment we made in January 2014 to February 2015:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
@@ -137,8 +139,6 @@ new_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year<sp
 (base_value <span class="op">/</span><span class="st"> </span>base_cpi) <span class="op">*</span><span class="st"> </span>new_cpi
 <span class="co"># Woops, looks like we lost a penny!</span></code></pre></div>
 <p><strong>Disclaimer:</strong> Escalation is normally formulated by lawyers and bankers, the author(s) of this package are neither, so the above should only be considered a code example.</p>
-</div>
-</div>
 </div>
 
 

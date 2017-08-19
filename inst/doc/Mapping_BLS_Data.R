@@ -1,17 +1,16 @@
 ## ----eval=FALSE----------------------------------------------------------
 #  library(blscrapeR)
-#  # Map the unemployment rate for the Southeastern United States.
 #  df <- get_bls_county(stateName = "Florida")
 #  
-#  bls_map_county(map_data=df, fill_rate = "unemployed_rate",
+#  map_bls(map_data=df, fill_rate = "unemployed_rate",
 #                 stateName = "Florida")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # Map the unemployment rate for the Southeastern United States.
 #  df <- get_bls_county(stateName = c("Florida", "Georgia", "Alabama"))
 #  
-#  bls_map_county(map_data=df, fill_rate = "unemployed_rate",
-#  stateName = c("Florida", "Georgia", "Alabama"))
+#  map_bls(map_data=df, fill_rate = "unemployed_rate", projection = "lambert",
+#                 stateName = c("Florida", "Georgia", "Alabama"))
 
 ## ------------------------------------------------------------------------
 library(blscrapeR)

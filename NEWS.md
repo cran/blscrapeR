@@ -1,3 +1,25 @@
+# blscrapeR 3.0
+
+## New Features
+
+* Added the map_bls() function. This function replaces the deprecated bls_map_county() bls_map_state() functions and is not backward compatible.
+
+* Updated internal data to 2016 FIPS standards.
+
+## Enhancements
+
+* Updated internal functions to use tidyverse methods. This includes the addition of a few dependencies such as purrr, tibble, and dplyr.
+
+* All data are now returned as tibbles.
+
+## Documentation
+
+* Updated all existing vignettes to use tidyverse functions.
+
+* Edited mapping vignette to include new `map_bls()` function.
+
+* Added tidyverse style code to the readme and vignettes.
+
 # blscrapeR 2.1.5
 
 * Document and vignette fixes

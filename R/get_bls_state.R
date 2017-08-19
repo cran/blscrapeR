@@ -6,6 +6,9 @@
 #' @param seasonality TRUE or FALSE. The default value is TRUE.
 #' @import datasets
 #' @importFrom utils download.file read.csv read.table
+#' @importFrom tibble as_tibble
+#' @importFrom purrr map
+#' @importFrom dplyr mutate
 #' @export get_bls_state
 #' @examples
 #' \dontrun{
@@ -18,7 +21,7 @@
 #'
 
 get_bls_state <- function(date_mth=NULL, seasonality=TRUE){
-    state.name=NULL
+    state.name=civ_pop=labor_force=employed=unemployed=NULL
     seas <- "https://www.bls.gov/web/laus/ststdsadata.txt"
     notseas <- "https://www.bls.gov/web/laus/ststdnsadata.txt"
     if (seasonality == TRUE){
@@ -51,8 +54,7 @@ get_bls_state <- function(date_mth=NULL, seasonality=TRUE){
     }
     
     # Make an empty list for data frames and iterate in big nasty for loop.
-    datalist <- list()
-    for (i in date_mth) {
+    datalist <- purrr::map(date_mth, function(i){
         if(i=="January 1976"){
             datebegin=4
         }else{
@@ -85,18 +87,18 @@ get_bls_state <- function(date_mth=NULL, seasonality=TRUE){
         cols$month <- i
         cols$state <- datasets::state.name
         # Put data frames into a list to be rebound later.                             
-        datalist[[i]] <- cols
-    }
+        output <- cols
+    })
+
     df <- do.call(rbind, datalist)
-    #df <- data.table::rbindlist(datalist)
+    df %<>% tibble::as_tibble() %>%
+        # Convert to correct data types.
+        dplyr::mutate(month=as.Date(paste('01', df$month), format = '%d %b %Y'),
+                      civ_pop=as.numeric(gsub(",", "", civ_pop)),
+                      labor_force=as.numeric(gsub(",", "", labor_force)),
+                      employed=as.numeric(gsub(",", "", employed)),
+                      unemployed=as.numeric(gsub(",", "", unemployed))) %>% tibble::as_tibble()
     
-    # Convert month colunm to ISO 8601 date format.
-    df$month <- as.Date(paste('01', df$month), format = '%d %b %Y')
-    # Yes, I know this is ugly but I didn't want to import dplyr for this one operation.
-    cols$civ_pop <- as.numeric(gsub(",", "", cols$civ_pop))
-    cols$labor_force <- as.numeric(gsub(",", "", cols$labor_force))
-    cols$employed <- as.numeric(gsub(",", "", cols$employed))
-    cols$unemployed <- as.numeric(gsub(",", "", cols$unemployed))
     # Add colunm for state fips codes.
     state_fips<-blscrapeR::state_fips
     df <- merge(df, state_fips, by = "state")

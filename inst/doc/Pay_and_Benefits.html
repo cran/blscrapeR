@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2017-06-19" />
+<meta name="date" content="2017-08-19" />
 
 <title>BLS API Pay and Benefits</title>
 
@@ -70,15 +70,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Pay and Benefits</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2017-06-19</em></h4>
+<h4 class="date"><em>2017-08-19</em></h4>
 
 
 
 <div id="the-bls-data-landscape" class="section level2">
 <h2>The BLS Data Landscape</h2>
 <p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="http://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
-<div id="catagories-you-will-find-useful-are" class="section level3">
-<h3>Catagories you will find useful are:</h3>
+</div>
+<div id="catagories-you-will-find-useful-are" class="section level2">
+<h2>Catagories you will find useful are:</h2>
 <ul>
 <li><p><a href="http://beta.bls.gov/dataQuery/find?fq=survey:%5Boe%5D&amp;q=oe">OES</a> (Occupational Employment Statistics) includes employment, benefits, and wages segmented by metro area and occupation.</p></li>
 <li><p><a href="http://data.bls.gov/cgi-bin/surveymost?cm">Employer Cost for Employee Compensation</a></p></li>
@@ -87,8 +88,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Other wage data can be found in the CPS, CES, and QCEW, which are covered in the <a href="https://github.com/keberwein/blscrapeR/blob/master/vignettes/Employment_and_Unemployment.Rmd">Employment seciton</a> of these vignettes.</p></li>
 </ul>
 <p><em>Note: The hyperlinks above link to lists of the most popular seriesIDs, but are only a small sample of all the data tracked by the BLS.</em></p>
-<div id="oes" class="section level4">
-<h4>OES</h4>
+</div>
+<div id="oes" class="section level2">
+<h2>OES</h2>
 <p>The OES contains similar wage data found in the CPS, but often has more resolution in certain geographic areas. Unlike the CPS, the OES is an annual survey and does not keep time series data.</p>
 <p>For example, we may want to compare the average hourly wage of Computer and Information Systems Managers in Orlando, FL to those in San Jose, CA. Notice, below the survey only returns values for 2015.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Computer and Information Systems Managers in Orlando, FL and San Jose, CA.</span>
@@ -100,43 +102,38 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw
 <p>Another OES example would be to grab the most recent Annual mean wage for All Occupations in All Industries in the United States.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="st">&quot;OEUN000000000000000000004&quot;</span>)
-df</code></pre></div>
-</div>
+<span class="kw">head</span>(df)</code></pre></div>
 <div id="employer-cost-for-employee-compensation" class="section level4">
 <h4>Employer Cost for Employee Compensation</h4>
 <p>This data set includes time series data on how much employers pay for employee benefits as a total cost and as a percent of employee wages and salaries.</p>
 <p>For example, if we want to see the total cost of benefits per hour work and also see what percentage that is of the total compensation, we could run the following script.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(tidyr)
-<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(tidyverse)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;CMU1030000000000D&quot;</span>, <span class="st">&quot;CMU1030000000000P&quot;</span>))
 
 <span class="co"># Spread series ids and rename columns to human readable format.</span>
 df.sp &lt;-<span class="st"> </span><span class="kw">spread</span>(df, seriesID, value) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">rename</span>(<span class="st">&quot;hourly_cost&quot;</span>=CMU1030000000000D, <span class="st">&quot;pct_of_wages&quot;</span>=CMU1030000000000P)
+<span class="st">    </span><span class="kw">rename</span>(<span class="st">&quot;hourly_cost&quot;</span>=CMU1030000000000D, <span class="st">&quot;pct_of_wages&quot;</span>=CMU1030000000000P) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="co"># Percentages are represented as floating integers. Fix this to avoid confusion.</span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">pct_of_wages =</span> pct_of_wages<span class="op">*</span><span class="fl">0.01</span>)
 
-<span class="co"># Percentages are represented as floating integers. Fix this to avoid confusion.</span>
-df.sp<span class="op">$</span>pct_of_wages &lt;-<span class="st"> </span>df.sp<span class="op">$</span>pct_of_wages<span class="op">*</span><span class="fl">0.01</span>
-df.sp</code></pre></div>
+<span class="kw">head</span>(df.sp)</code></pre></div>
 </div>
-<div id="national-compensation-survey-benefits" class="section level4">
-<h4>National Compensation Survey-Benefits</h4>
+</div>
+<div id="national-compensation-survey-benefits" class="section level2">
+<h2>National Compensation Survey-Benefits</h2>
 <p>This survey includes data on how many Americans have access to certain benefits. For example, we can see the percentage of those who have access to paid vacation days and those who have access to Health insurance through their employers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
-<span class="kw">library</span>(tidyr)
-<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(tidyverse)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;NBU10500000000000033030&quot;</span>, <span class="st">&quot;NBU11500000000000028178&quot;</span>))
 
 <span class="co"># Spread series ids and rename columns to human readable format.</span>
 df.sp &lt;-<span class="st"> </span><span class="kw">spread</span>(df, seriesID, value) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">rename</span>(<span class="st">&quot;pct_paid_vacation&quot;</span>=NBU10500000000000033030, <span class="st">&quot;pct_health_ins&quot;</span>=NBU11500000000000028178)
+<span class="st">    </span><span class="kw">rename</span>(<span class="st">&quot;pct_paid_vacation&quot;</span>=NBU10500000000000033030, <span class="st">&quot;pct_health_ins&quot;</span>=NBU11500000000000028178) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="co"># Value data are in whole numbers but represent percentages. Fix this to avoid confusion.</span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">pct_of_wages =</span> pct_of_wages<span class="op">*</span><span class="fl">0.01</span>, <span class="dt">pct_health_ins =</span> pct_health_ins<span class="op">*</span><span class="fl">0.01</span>)
 
-<span class="co"># Value data are in whole numbers but represent percentages. Fix this to avoid confusion.</span>
-df.sp<span class="op">$</span>pct_paid_vacation &lt;-<span class="st"> </span>df.sp<span class="op">$</span>pct_paid_vacation<span class="op">*</span><span class="fl">0.01</span>
-df.sp<span class="op">$</span>pct_health_ins &lt;-<span class="st"> </span>df.sp<span class="op">$</span>pct_health_ins<span class="op">*</span><span class="fl">0.01</span>
-df.sp</code></pre></div>
-</div>
-</div>
+<span class="kw">head</span>(df.sp)</code></pre></div>
 </div>
 
 

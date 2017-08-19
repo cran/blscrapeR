@@ -23,7 +23,8 @@
 #' @param highFill The fill color of the higher values being mapped. The default color is green, but can be changed to any color accepted by
 #' \code{ggplot2::scale_fill_gradient}.
 #' @seealso \url{https://cran.r-project.org/package=tigris}
-#' @examples \dontrun{
+#' @examples 
+#' \dontrun{
 #' # Download the most current month unemployment statistics on a county level.
 #' df <- get_bls_county()
 #' 
@@ -46,6 +47,8 @@
 #'
 
 bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NULL, projection=NULL, lowFill="green", highFill="red"){
+    warning("This function has been deprecated, consider using map_bls() instead.")
+    
     if (is.null(fill_rate)){
         stop(message("Please specify a fill_rate in double quotes. What colunm in your data frame do you want to map?"))
     }
@@ -64,7 +67,7 @@ bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NU
             message("Supported projections are Lambert and Mercator. A null projection argument returns Mercator for this function.")
         }
     }
-
+    
     # Unemployment statistics by county: Get and process data.
     # Check to see if user selected specific state(s).
     if (!is.null(stateName)){
@@ -103,9 +106,9 @@ bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NU
         ggplot2::scale_fill_gradient(low=lowFill, high=highFill, na.value="grey50") +
         ggplot2::labs(title=labtitle) + 
         ggplot2::theme(axis.line=ggplot2::element_blank(), axis.text.x=ggplot2::element_blank(), axis.text.y=ggplot2::element_blank(), axis.ticks=ggplot2::element_blank(),
-              axis.title.x=ggplot2::element_blank(), axis.title.y=ggplot2::element_blank(), panel.grid.major=ggplot2::element_blank(), panel.grid.minor=ggplot2::element_blank(),
-              panel.border=ggplot2::element_blank(), panel.background=ggplot2::element_blank(), legend.title=ggplot2::element_blank())
-    }
+                       axis.title.x=ggplot2::element_blank(), axis.title.y=ggplot2::element_blank(), panel.grid.major=ggplot2::element_blank(), panel.grid.minor=ggplot2::element_blank(),
+                       panel.border=ggplot2::element_blank(), panel.background=ggplot2::element_blank(), legend.title=ggplot2::element_blank())
+}
 
 
 #
@@ -129,7 +132,8 @@ bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NU
 #' @param highFill The fill color of the higher values being mapped. The default color is green, but can be changed to any color accepted by
 #' \code{ggplot2::scale_fill_gradient}.
 #' @seealso \url{https://cran.r-project.org/package=tigris}
-#' @examples \dontrun{
+#' @examples 
+#' \dontrun{
 #' # Downlaod employment statistics for April 2016.
 #' df <- get_bls_state("April 2016", seasonality = TRUE)
 #' 
@@ -143,6 +147,8 @@ bls_map_county <- function(map_data, fill_rate=NULL, labtitle=NULL, stateName=NU
 #'
 
 bls_map_state <- function(map_data, fill_rate=NULL, labtitle=NULL, lowFill="green", highFill="red"){
+    warning("This function has been deprecated, consider using map_bls() instead.")
+
     if (is.null(fill_rate)){
         stop(message("Please specify a fill_rate in double quotes. What colunm in your data frame do you want to map?"))
     }
@@ -162,5 +168,3 @@ bls_map_state <- function(map_data, fill_rate=NULL, labtitle=NULL, lowFill="gree
                        axis.title.x=ggplot2::element_blank(), axis.title.y=ggplot2::element_blank(), panel.grid.major=ggplot2::element_blank(), panel.grid.minor=ggplot2::element_blank(),
                        panel.border=ggplot2::element_blank(), panel.background=ggplot2::element_blank(), legend.title=ggplot2::element_blank())
 }
-
-

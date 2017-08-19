@@ -12,17 +12,19 @@
 #' @keywords bls api economics cpi unemployment inflation
 #' @importFrom jsonlite toJSON
 #' @importFrom httr content POST content_type_json
+#' @importFrom purrr map
+#' @importFrom tibble as_tibble
 #' @export bls_api
 #' @seealso \url{https://www.bls.gov/data/}
 #' @seealso \url{https://beta.bls.gov/dataQuery/search}
 #' @examples
 #' 
-#' \dontrun{
+#' 
 #' ## API Version 1.0 R Script Sample Code
 #' ## Single Series request
 #' df <- bls_api("LAUCN040010000000005")
 #' 
-#' 
+#' \dontrun{
 #' ## API Version 1.0 R Script Sample Code
 #' ## Multiple Series request with date params.
 #' df <- bls_api(c("LAUCN040010000000005", "LAUCN040010000000006"), 
@@ -57,7 +59,7 @@ bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey
                 ,"\nThe endyear argument has automatically been set to ", format(Sys.Date(), "%Y"),".")
     }
     # Payload won't take NULL values, have to check every field.
-    # Probably a more elegant way do do this using an apply function.
+    # Probably a more elegant way do do this.
     if (exists("registrationKey") & !is.null(registrationKey)){
         if (registrationKey=="BLS_KEY"){
             payload["registrationKey"] <- as.character(Sys.getenv("BLS_KEY"))
@@ -107,15 +109,15 @@ bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey
     jsondat <- httr::content(httr::POST(base_url, body = payload, httr::content_type_json()))
     
     if(length(jsondat$Results) > 0) {
-        dt <- do.call("rbind",lapply(jsondat$Results$series, function(s) {
-            dt <- do.call("rbind", lapply(s$data, function(d) {
+        dt <- do.call("rbind",purrr::map(jsondat$Results$series, function(s) {
+            dt <- do.call("rbind", purrr::map(s$data, function(d) {
                 d[["footnotes"]] <- paste(unlist(d[["footnotes"]]), collapse = " ")
                 d[["seriesID"]] <- paste(unlist(s[["seriesID"]]), collapse = " ")
-                d <- lapply(lapply(d, unlist), paste, collapse=" ")
+                d <- purrr::map(purrr::map(d, unlist), paste, collapse=" ")
             }))
         }))
         jsondat$Results <- dt
-        df <- as.data.frame(jsondat$Results)
+        df <- tibble::as_tibble(jsondat$Results)
         df$value <- as.numeric(as.character(df$value))
         
         if ("year" %in% colnames(df)){
@@ -129,4 +131,3 @@ bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey
     }
     return(df)
 }
-

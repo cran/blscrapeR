@@ -9,6 +9,7 @@
 #' @param catalog Series description information available only for certain data sets.
 #' @param calculations Returns year-over-year calculations if set to TRUE.
 #' @param annualaverage Returns an annual average if set to TRUE.
+#' @param ... additional arguments
 #' @keywords bls api economics cpi unemployment inflation
 #' @importFrom jsonlite toJSON
 #' @importFrom httr content POST content_type_json
@@ -45,9 +46,9 @@
 #' calculations = TRUE, annualaverage = TRUE, catalog = TRUE)
 #' }
 #' 
-# TODO: Put an a warning if user exceeds maximun number of years allowed by the BLS.
+# #TODO: Put an a warning if user exceeds maximun number of years allowed by the BLS.
 bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey = NULL, 
-                     catalog = NULL, calculations = NULL, annualaverage = NULL){
+                     catalog = FALSE, calculations = FALSE, annualaverage = FALSE, ...){
     # Set some dummy variables. This keeps CRAN check happy.
     year=period=':='=seriesID=NULL
     # Begin constructing payload.
@@ -108,14 +109,15 @@ bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey
     # Here's the actual API call.
     jsondat <- httr::content(httr::POST(base_url, body = payload, httr::content_type_json()))
     
-    if(length(jsondat$Results) > 0) {
-        dt <- do.call("rbind",purrr::map(jsondat$Results$series, function(s) {
+    if(jsondat$status == "REQUEST_SUCCEEDED") {
+        dt <- do.call("rbind", purrr::map(jsondat$Results$series, function(s) {
             dt <- do.call("rbind", purrr::map(s$data, function(d) {
                 d[["footnotes"]] <- paste(unlist(d[["footnotes"]]), collapse = " ")
                 d[["seriesID"]] <- paste(unlist(s[["seriesID"]]), collapse = " ")
                 d <- purrr::map(purrr::map(d, unlist), paste, collapse=" ")
             }))
         }))
+      
         jsondat$Results <- dt
         df <- tibble::as_tibble(jsondat$Results)
         df$value <- as.numeric(as.character(df$value))
@@ -123,11 +125,12 @@ bls_api <- function (seriesid, startyear = NULL, endyear = NULL, registrationKey
         if ("year" %in% colnames(df)){
             df$year <- as.numeric(as.character(df$year))
         }
-        
-        if (nrow(df)==0){
-            stop(print(jsondat$message),
-                 print(jsondat$status))
-        }
+        message(jsondat$status)
+    } else {
+        # If request fails, return an empty data frame plus the json status and message.
+        df <- data.frame()
+        message(jsondat$status)
+        message(jsondat$message)
     }
     return(df)
 }

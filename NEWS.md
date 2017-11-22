@@ -1,3 +1,17 @@
+# blscrapeR 3.1.1
+
+## Bug fixes
+
+* The `bls_api()` function now returns the catalog data with a `catalog=TRUE` argument.
+
+## Enhancements
+
+* The `bls_api()` function now returns verbose error message if the api request fails.
+
+* Added BLS `series_ids` internal dataset.
+
+* Added `search_ids()` function to search the internal series_ids data set.
+
 # blscrapeR 3.0.1
 
 ## Bug Fixes

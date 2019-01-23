@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2018-07-10" />
+<meta name="date" content="2019-01-23" />
 
 <title>BLS API Employment and Unemployment</title>
 
@@ -70,47 +70,47 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Employment and Unemployment</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2018-07-10</em></h4>
+<h4 class="date"><em>2019-01-23</em></h4>
 
 
 
 <div id="the-bls-data-landscape" class="section level2">
 <h2>The BLS Data Landscape</h2>
-<p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="http://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
+<p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="https://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
 </div>
 <div id="catagories-you-will-find-useful-are" class="section level2">
 <h2>Catagories you will find useful are:</h2>
 <ul>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ln">CPS</a> (Current Population Survey) includes employment and unemployment rates nationally.</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?la">LAUS</a> (Local Area Unemployment Statistics)</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ce">CES</a> (Current Employment Statistics) includes employment by industry.</p></li>
-<li><p><a href="http://beta.bls.gov/dataQuery/find?fq=survey:%5Boe%5D&amp;q=oe">OES</a> (Occupational Employment Statistics) includes earnings and wages by industry, age, sex, etc.</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?jt">JOLTS</a> (Job Openings and Labor Turnover Survey)</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?en">QCEW</a> (Quarterly Census of Employment &amp; Wages)</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?bd">BDM</a> (Business Employment Dynamics)</p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?tu">ATUS</a> (American Time Use Survey)</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?ln">CPS</a> (Current Population Survey) includes employment and unemployment rates nationally.</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?la">LAUS</a> (Local Area Unemployment Statistics)</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?ce">CES</a> (Current Employment Statistics) includes employment by industry.</p></li>
+<li><p><a href="https://beta.bls.gov/dataQuery/find?fq=survey:%5Boe%5D&amp;q=oe">OES</a> (Occupational Employment Statistics) includes earnings and wages by industry, age, sex, etc.</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?jt">JOLTS</a> (Job Openings and Labor Turnover Survey)</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?en">QCEW</a> (Quarterly Census of Employment &amp; Wages)</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?bd">BDM</a> (Business Employment Dynamics)</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?tu">ATUS</a> (American Time Use Survey)</p></li>
 </ul>
 <p><em>Note: The hyperlinks above link to lists of the most popular seriesIDs, but are only a small sample of all the data tracked by the BLS.</em></p>
 </div>
 <div id="cps" class="section level2">
 <h2>CPS</h2>
-<p>An example of employment statistics from is a comparison of two different <a href="http://www.bls.gov/news.release/empsit.t15.htm">unemployment rates</a> from the CPS.</p>
+<p>An example of employment statistics from is a comparison of two different <a href="https://www.bls.gov/news.release/empsit.t15.htm">unemployment rates</a> from the CPS.</p>
 <p>Below is the U-3 Unemployment Rate (the “official” rate) vs. the U-6 Unemployment Rate, which includes all persons marginally attached to the labor force, plus total employed part time for economic reasons, plus all persons marginally attached to the labor force.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># U3 Unemployment vs. U6 Unemployment</span>
 <span class="co"># More information on unemployment rates here:</span>
 <span class="co"># http://www.bls.gov/news.release/empsit.t15.htm</span>
 <span class="kw">library</span>(blscrapeR)
 <span class="kw">library</span>(tidyverse)
-df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LNS13327709&quot;</span>, <span class="st">&quot;LNS14000000&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
+df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LNS13327709&quot;</span>, <span class="st">&quot;LNS14000000&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) %&gt;%
+<span class="st">    </span><span class="kw">spread</span>(seriesID, value) %&gt;%
 <span class="st">    </span><span class="kw">dateCast</span>()
 
 <span class="kw">tail</span>(df)</code></pre></div>
 <p>Another example from the CPS deals with median weekly earnings by occupation. In this case, database administrators vs. software developers.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 <span class="kw">library</span>(tidyverse)
-df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LEU0254530800&quot;</span>, <span class="st">&quot;LEU0254530600&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
+df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;LEU0254530800&quot;</span>, <span class="st">&quot;LEU0254530600&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2000</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) %&gt;%
+<span class="st">    </span><span class="kw">spread</span>(seriesID, value) %&gt;%
 <span class="st">    </span><span class="kw">dateCast</span>()
 
 <span class="kw">tail</span>(df)</code></pre></div>
@@ -121,8 +121,8 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 <span class="kw">library</span>(tidyverse)
 
-df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;TUU10101AA01014236&quot;</span>, <span class="st">&quot;TUU10101AA01013951&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
+df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;TUU10101AA01014236&quot;</span>, <span class="st">&quot;TUU10101AA01013951&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) %&gt;%
+<span class="st">    </span><span class="kw">spread</span>(seriesID, value) %&gt;%
 <span class="st">    </span><span class="kw">dateCast</span>()
 
 <span class="kw">tail</span>(df)</code></pre></div>
@@ -137,7 +137,7 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw
                 <span class="dt">startyear =</span> <span class="dv">2006</span>, <span class="dt">endyear =</span> <span class="dv">2016</span>)
 
 df &lt;-<span class="st"> </span><span class="kw">spread</span>(df, seriesID, value)
-df<span class="op">$</span>penetration_rt &lt;-<span class="st"> </span>df<span class="op">$</span>SMS01000006500000001 <span class="op">/</span><span class="st"> </span>df<span class="op">$</span>SMS01000000000000001
+df$penetration_rt &lt;-<span class="st"> </span>df$SMS01000006500000001 /<span class="st"> </span>df$SMS01000000000000001
 <span class="kw">tail</span>(df)</code></pre></div>
 </div>
 <div id="qcew" class="section level2">
@@ -146,8 +146,8 @@ df<span class="op">$</span>penetration_rt &lt;-<span class="st"> </span>df<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 <span class="kw">library</span>(tidyverse)
 
-df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;ENU0608510010&quot;</span>, <span class="st">&quot;ENU1209510010&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">spread</span>(seriesID, value) <span class="op">%&gt;%</span>
+df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="kw">c</span>(<span class="st">&quot;ENU0608510010&quot;</span>, <span class="st">&quot;ENU1209510010&quot;</span>), <span class="dt">startyear =</span> <span class="dv">2005</span>, <span class="dt">endyear =</span> <span class="dv">2015</span>) %&gt;%
+<span class="st">    </span><span class="kw">spread</span>(seriesID, value) %&gt;%
 <span class="st">    </span><span class="kw">dateCast</span>()
 
 <span class="kw">tail</span>(df)</code></pre></div>

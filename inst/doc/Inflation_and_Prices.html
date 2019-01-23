@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2018-07-10" />
+<meta name="date" content="2019-01-23" />
 
 <title>BLS API Inflation and Prices</title>
 
@@ -70,13 +70,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">BLS API Inflation and Prices</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2018-07-10</em></h4>
+<h4 class="date"><em>2019-01-23</em></h4>
 
 
 
 <div id="the-bls-data-landscape" class="section level2">
 <h2>The BLS Data Landscape</h2>
-<p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="http://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
+<p>The most difficult thing about working with BLS data is gaining a clear understanding on what data are available and what they represent. Some of the more popular data sets can be found on the <a href="https://www.bls.gov/data/">BLS Databases, Tables &amp; Calculations website</a>. The selected examples below do not include all series or databases.</p>
 </div>
 <div id="catagories-you-will-find-useful-are" class="section level2">
 <h2>Catagories you will find useful are:</h2>
@@ -85,30 +85,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>CPI (Consumer Price Index)</h2>
 <p>The CPI data tracks the prices paid by urban consumers for a representative basket of goods and services. The CPI is the primary metric used to calculate inflation.</p>
 <ul>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?cu">CPI All Urban Consumers (Current Series)</a></p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?cw">CPI Urban Wage Earners and Clerical Workers (Current Series)</a></p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?su">CPI All Urban Consumers (Chained CPI)</a></p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ap">CPI Average Price Data</a></p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?cu">CPI All Urban Consumers (Current Series)</a></p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?cw">CPI Urban Wage Earners and Clerical Workers (Current Series)</a></p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?su">CPI All Urban Consumers (Chained CPI)</a></p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?ap">CPI Average Price Data</a></p></li>
 </ul>
 <div id="ppi-producer-price-index" class="section level4">
 <h4>PPI (Producer Price Index)</h4>
 <p>The PPI data tracks the average change in selling prices received by domestic producers for their output over time.</p>
 <ul>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?ap">PPI Industry Data</a></p></li>
-<li><p><a href="http://data.bls.gov/cgi-bin/surveymost?wp">PPI Commodity Data</a> includes “headline” FD-ID indexes.</p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?ap">PPI Industry Data</a></p></li>
+<li><p><a href="https://data.bls.gov/cgi-bin/surveymost?wp">PPI Commodity Data</a> includes “headline” FD-ID indexes.</p></li>
 </ul>
 </div>
 </div>
 <div id="ipp-international-price-program" class="section level2">
 <h2>IPP (International Price Program)</h2>
 <ul>
-<li><a href="http://data.bls.gov/cgi-bin/surveymost?ei">IPP Import/Export Price Indexes</a></li>
+<li><a href="https://data.bls.gov/cgi-bin/surveymost?ei">IPP Import/Export Price Indexes</a></li>
 </ul>
 <p><em>Note: The hyperlinks above link to lists of the most popular seriesIDs, but are only a small sample of all the data tracked by the BLS.</em></p>
 </div>
 <div id="cpi-tracking-inflation" class="section level2">
 <h2>CPI: Tracking Inflation</h2>
-<p>Although there are many measures of inflation, the CPI’s “Consumer Price Index for All Urban Consumers: All Items” is normally the headline inflation rate one would hear about on the news (<a href="https://fred.stlouisfed.org/series/CPIAUCSL">see FRED</a>). For other measures of inflation, the <a href="http://www.bls.gov/cpi/cpifaq.htm#Question_12">BLS FAQ</a> on the subject is worth reading.</p>
+<p>Although there are many measures of inflation, the CPI’s “Consumer Price Index for All Urban Consumers: All Items” is normally the headline inflation rate one would hear about on the news (<a href="https://fred.stlouisfed.org/series/CPIAUCSL">see FRED</a>).</p>
 <p>Getting these data from the <code>blscrapeR</code> package is easy enough:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="st">&quot;CUSR0000SA0&quot;</span>)
@@ -119,7 +119,7 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="st
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blscrapeR)
 df &lt;-<span class="st"> </span><span class="kw">inflation_adjust</span>(<span class="dv">1995</span>)
 <span class="kw">tail</span>(df)</code></pre></div>
-<p>If we want to check our results, we can head over to the CPI <a href="http://data.bls.gov/cgi-bin/cpicalc.pl">Inflation Calculator</a> on the BLS website.</p>
+<p>If we want to check our results, we can head over to the CPI <a href="https://data.bls.gov/cgi-bin/cpicalc.pl">Inflation Calculator</a> on the BLS website.</p>
 </div>
 <div id="cpi-tracking-escalation" class="section level2">
 <h2>CPI: Tracking Escalation</h2>
@@ -132,11 +132,11 @@ df &lt;-<span class="st"> </span><span class="kw">bls_api</span>(<span class="st
 <span class="co"># Set base value.</span>
 base_value &lt;-<span class="st"> </span><span class="dv">100</span>
 <span class="co"># Get CPI from base period (January 2014).</span>
-base_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year<span class="op">==</span><span class="dv">2014</span> <span class="op">&amp;</span><span class="st"> </span>periodName<span class="op">==</span><span class="st">&quot;January&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
+base_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year==<span class="dv">2014</span> &amp;<span class="st"> </span>periodName==<span class="st">&quot;January&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
 <span class="co"># Get the CPI for the new period (February 2015).</span>
-new_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year<span class="op">==</span><span class="dv">2015</span> <span class="op">&amp;</span><span class="st"> </span>periodName<span class="op">==</span><span class="st">&quot;February&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
+new_cpi &lt;-<span class="st"> </span><span class="kw">subset</span>(df, year==<span class="dv">2015</span> &amp;<span class="st"> </span>periodName==<span class="st">&quot;February&quot;</span>, <span class="dt">select =</span> <span class="st">&quot;value&quot;</span>)
 <span class="co"># Calculate the updated value of our $100 investment.</span>
-(base_value <span class="op">/</span><span class="st"> </span>base_cpi) <span class="op">*</span><span class="st"> </span>new_cpi
+(base_value /<span class="st"> </span>base_cpi) *<span class="st"> </span>new_cpi
 <span class="co"># Woops, looks like we lost a penny!</span></code></pre></div>
 <p><strong>Disclaimer:</strong> Escalation is normally formulated by lawyers and bankers, the author(s) of this package are neither, so the above should only be considered a code example.</p>
 </div>

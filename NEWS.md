@@ -1,3 +1,23 @@
+# blscrapeR 3.1.5
+
+## Documentation
+
+* Converted BLS hyperlinks to https.
+
+* Fixed various dead hyperlinks.
+
+# blscrapeR 3.1.4
+
+## Bug fixes
+
+* Fixed area in tesing module where `qcew_api()` function was pulling inproper dates.
+
+## Enhancements
+
+* Added logic to `qcew_api()` that throws a warning if useer attempts to query dates outside of the API's range.
+
+Updated NIACS and FIPS codes for 2018.
+
 # blscrapeR 3.1.3
 
 ## Bug fixes

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2018-07-10" />
+<meta name="date" content="2019-01-23" />
 
 <title>Mapping BLS Data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Mapping BLS Data</h1>
 <h4 class="author"><em>Kris Eberwein</em></h4>
-<h4 class="date"><em>2018-07-10</em></h4>
+<h4 class="date"><em>2019-01-23</em></h4>
 
 
 
@@ -122,16 +122,16 @@ df &lt;-<span class="st"> </span><span class="kw">get_bls_county</span>()
 us_map &lt;-<span class="st"> </span>county_map_data
 
 <span class="co"># Insert larger breaks in unemployment rates</span>
-df<span class="op">$</span>rate_d &lt;-<span class="st"> </span><span class="kw">cut</span>(df<span class="op">$</span>unemployed_rate, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">by =</span> <span class="dv">2</span>), <span class="dv">35</span>))
+df$rate_d &lt;-<span class="st"> </span><span class="kw">cut</span>(df$unemployed_rate, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dt">by =</span> <span class="dv">2</span>), <span class="dv">35</span>))
 <span class="co"># Plot</span>
-<span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="kw">ggplot</span>() +
 <span class="st">    </span><span class="kw">geom_map</span>(<span class="dt">data=</span>us_map, <span class="dt">map=</span>us_map,
              <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">map_id=</span>id, <span class="dt">group=</span>group),
-             <span class="dt">fill=</span><span class="st">&quot;#ffffff&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#0e0e0e&quot;</span>, <span class="dt">size=</span><span class="fl">0.15</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_map</span>(<span class="dt">data=</span>df, <span class="dt">map=</span>us_map, <span class="kw">aes_string</span>(<span class="dt">map_id=</span><span class="st">&quot;fips&quot;</span>, <span class="dt">fill=</span>df<span class="op">$</span>rate_d),
-             <span class="dt">color=</span><span class="st">&quot;#0e0e0e&quot;</span>, <span class="dt">size=</span><span class="fl">0.15</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">scale_fill_brewer</span>()<span class="op">+</span>
-<span class="st">    </span><span class="kw">coord_equal</span>() <span class="op">+</span>
+             <span class="dt">fill=</span><span class="st">&quot;#ffffff&quot;</span>, <span class="dt">color=</span><span class="st">&quot;#0e0e0e&quot;</span>, <span class="dt">size=</span><span class="fl">0.15</span>) +
+<span class="st">    </span><span class="kw">geom_map</span>(<span class="dt">data=</span>df, <span class="dt">map=</span>us_map, <span class="kw">aes_string</span>(<span class="dt">map_id=</span><span class="st">&quot;fips&quot;</span>, <span class="dt">fill=</span>df$rate_d),
+             <span class="dt">color=</span><span class="st">&quot;#0e0e0e&quot;</span>, <span class="dt">size=</span><span class="fl">0.15</span>) +
+<span class="st">    </span><span class="kw">scale_fill_brewer</span>()+
+<span class="st">    </span><span class="kw">coord_equal</span>() +
 <span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.line=</span><span class="kw">element_blank</span>(),
           <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),
           <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>(),
@@ -168,14 +168,14 @@ leafmap &lt;-<span class="st"> </span><span class="kw">geo_join</span>(map.shape
 
 <span class="co"># Format popup data for leaflet map.</span>
 popup_dat &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;&lt;strong&gt;County: &lt;/strong&gt;&quot;</span>, 
-                    leafmap<span class="op">$</span>NAME, 
+                    leafmap$NAME, 
                     <span class="st">&quot;&lt;br&gt;&lt;strong&gt;Value: &lt;/strong&gt;&quot;</span>, 
-                    leafmap<span class="op">$</span>unemployed_rate)
+                    leafmap$unemployed_rate)
 
 pal &lt;-<span class="st"> </span><span class="kw">colorQuantile</span>(<span class="st">&quot;YlOrRd&quot;</span>, <span class="ot">NULL</span>, <span class="dt">n =</span> <span class="dv">20</span>)
 <span class="co"># Render final map in leaflet.</span>
-<span class="kw">leaflet</span>(<span class="dt">data =</span> leafmap) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">addPolygons</span>(<span class="dt">fillColor =</span> <span class="op">~</span><span class="kw">pal</span>(unemployed_rate), 
+<span class="kw">leaflet</span>(<span class="dt">data =</span> leafmap) %&gt;%<span class="st"> </span><span class="kw">addTiles</span>() %&gt;%
+<span class="st">    </span><span class="kw">addPolygons</span>(<span class="dt">fillColor =</span> ~<span class="kw">pal</span>(unemployed_rate), 
                 <span class="dt">fillOpacity =</span> <span class="fl">0.8</span>, 
                 <span class="dt">color =</span> <span class="st">&quot;#BDBDC3&quot;</span>, 
                 <span class="dt">weight =</span> <span class="dv">1</span>,

@@ -2,6 +2,7 @@ area_titles
 county_fips
 county_map_data
 county_map_merc
+naics
 niacs
 series_ids
 size_titles

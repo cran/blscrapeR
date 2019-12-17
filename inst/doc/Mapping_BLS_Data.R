@@ -1,23 +1,23 @@
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library(blscrapeR)
 #  df <- get_bls_county(stateName = "Florida")
 #  
 #  map_bls(map_data=df, fill_rate = "unemployed_rate",
 #                 stateName = "Florida")
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Map the unemployment rate for the Southeastern United States.
 #  df <- get_bls_county(stateName = c("Florida", "Georgia", "Alabama"))
 #  
 #  map_bls(map_data=df, fill_rate = "unemployed_rate", projection = "lambert",
 #                 stateName = c("Florida", "Georgia", "Alabama"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(blscrapeR)
 us_map <- county_map_data
 head(us_map)
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library(blscrapeR)
 #  library(ggplot2)
 #  # Get the most recent unemployment rate for each county on a national level.
@@ -49,7 +49,7 @@ head(us_map)
 #            legend.title=element_blank())
 #  
 
-## ----eval=FALSE----------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Leaflet map
 #  library(blscrapeR)
 #  library(tigris)

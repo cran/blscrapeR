@@ -4,7 +4,13 @@
 \alias{qcew_api}
 \title{Request data from the Quarterly Census of Employment and Wages.}
 \usage{
-qcew_api(year = 2018, qtr = "a", slice = NULL, sliceCode = NULL, ...)
+qcew_api(
+  year = c(format(Sys.Date(), "\%Y")),
+  qtr = "1",
+  slice = NULL,
+  sliceCode = NULL,
+  ...
+)
 }
 \arguments{
 \item{year}{These data begin in 2012 and go to the most recent complete quarter. The argument can be entered
@@ -23,6 +29,9 @@ and \code{blscrapeR::size_titles} contains industry size codes. These codes can 
 
 \item{...}{additional arguments}
 }
+\value{
+A tibble from the BLS API.
+}
 \description{
 Return data from the QCEW API. This is separate from the main BLS API and returns quarterly data
 sliced by industry, area or size. Industry is identified by NIACS code and area is identified by FIPS code.
@@ -30,9 +39,10 @@ A key is not required for the QCEW API.
 }
 \examples{
 
+ \dontrun{
 # A request for the employment levels and wages for NIACS 5112: Software Publishers.
-dat <- qcew_api(year=2017, qtr="a", slice="industry", sliceCode=5112)
-
+dat <- qcew_api(c(format(Sys.Date(), "\%Y")), qtr="1", slice="industry", sliceCode=10)
+}
 
 }
 \seealso{

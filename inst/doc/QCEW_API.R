@@ -1,10 +1,10 @@
 ## ---- eval=FALSE--------------------------------------------------------------
 #  library(blscrapeR)
-#  dat <- qcew_api(year=2016, qtr=1, slice="industry", sliceCode=5112)
+#  dat <- qcew_api(year=2021, qtr=1, slice="industry", sliceCode=10)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  library(blscrapeR)
-#  dat <- qcew_api(year=2016, qtr="A", slice="industry", sliceCode=5112)
+#  dat <- qcew_api(year=2021, qtr="A", slice="industry", sliceCode=10)
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  areaCodes <- blscrapeR::area_titles

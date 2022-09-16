@@ -8,11 +8,12 @@
 #' @importFrom dplyr mutate select rename
 #' @importFrom tibble as_tibble
 #' @export inflation_adjust
+#' @return A tibble from the BLS API.
 #' @examples
-#' 
+#' \dontrun{
 #' ## Get historical USD values based on a 2010 dollar.
 #' values <- inflation_adjust(base_year = 2015)
-#' 
+#' }
 #' 
 inflation_adjust <- function(base_year=NA, ...){
     # Set some dummy variables. This keeps CRAN check happy.

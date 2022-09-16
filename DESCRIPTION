@@ -1,8 +1,8 @@
 Package: blscrapeR
 Type: Package
 Title: An API Wrapper for the Bureau of Labor Statistics (BLS)
-Version: 3.2.0
-Authors@R: person("Kris", "Eberwein", email = "eberwein@knights.ucf.edu",
+Version: 3.2.2
+Authors@R: person("Kris", "Eberwein", email = "kris.eberwein@gmail.com",
                   role = c("aut", "cre"))
 Description: Scrapes various data from <https://www.bls.gov/>. The U.S. Bureau of Labor Statistics is the statistical branch of the United States Department of Labor. The package has additional functions to help parse, analyze and visualize the data.
 Depends: R (>= 3.5.0)
@@ -13,11 +13,11 @@ License: MIT + file LICENSE
 URL: https://github.com/keberwein/blscrapeR
 BugReports: https://github.com/keberwein/blscrapeR/issues
 LazyData: true
-RoxygenNote: 7.0.2
 VignetteBuilder: knitr
+RoxygenNote: 7.2.1
 NeedsCompilation: no
-Packaged: 2019-12-17 16:44:05 UTC; anon
+Packaged: 2022-09-15 17:29:13 UTC; anon
 Author: Kris Eberwein [aut, cre]
-Maintainer: Kris Eberwein <eberwein@knights.ucf.edu>
+Maintainer: Kris Eberwein <kris.eberwein@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-12-17 18:20:02 UTC
+Date/Publication: 2022-09-16 22:36:13 UTC

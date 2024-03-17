@@ -6,9 +6,9 @@
 #  head(df)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  library(blscrapeR)
-#  df <- inflation_adjust(1995)
-#  tail(df)
+#  df <- inflation_adjust("2015-01-01") %>%
+#      arrange(desc(date))
+#  head(df)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library(blscrapeR)

@@ -4,10 +4,10 @@
 \alias{firstupper}
 \title{Internal function to cast the first letter of a word to upper-case.}
 \usage{
-firstupper(x)
+firstupper(x, ...)
 }
 \arguments{
-\item{x}{A word or string to capatalize}
+\item{x}{A word or string to capitalize}
 
 \item{...}{additional arguments.}
 }

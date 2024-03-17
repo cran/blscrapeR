@@ -2,7 +2,7 @@
 blscrapeR <img src="man/figures/blscrapeR_hex.png" align="right" />
 ===================================================================
 
-[![Build Status](https://travis-ci.org/keberwein/blscrapeR.png?branch=master)](https://travis-ci.org/keberwein/blscrapeR) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blscrapeR)](https://www.r-pkg.org/badges/version/blscrapeR) [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R build status](https://github.com/keberwein/blscrapeR/workflows/R-CMD-check/badge.svg)](https://github.com/keberwein/blscrapeR/actions)  [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blscrapeR)](https://www.r-pkg.org/badges/version/blscrapeR) [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 Designed to be a tidy API wrapper for the Bureau of Labor Statistics (BLS.) The package has additional functions to help parse, analyze and visualize the data. The package utilizes "tidyverse" concepts for internal functionality and encourages the use of those concepts with the output data.
 
@@ -95,25 +95,6 @@ You should consider [getting an API key](http://data.bls.gov/registrationEngine/
 | Optional annual averages | Yes                      | No                         |
 | Series descriptions      | Yes                      | No                         |
 
-### Key Install
-
-``` r
-library(blscrapeR)
-set_bls_key("YOUR_KEY_IN_QUOTATIONS")
-# First time, reload your enviornment so you can use the key without restarting R.
-readRenviron("~/.Renviron")
-# You can check it with:
-Sys.getenv("BLS_KEY")
-```
-
-Note: The above script will add a line to your `.Renviron` file to be re-used when ever you are in the package. If you are not comfortable with that, you can add the following line to your `.Renviron` file manually to produce the same result.
-
-`BLS_KEY='YOUR_KEY_IN_SINGLE_QUOTES'`
-
-Advanced Usage
---------------
-
-Now that you have an API key installed, you can call your key in the package’s function arguments with `"BLS_KEY"`. Don't forget the quotes! If you just HAVE to have your key hard-coded in your scripts, you can also pass they key as a string.
 
 ### Download Multiple BLS Series at Once
 
@@ -168,65 +149,115 @@ ggplot(data = df, aes(x = date)) +
 
 *For more advanced usage, please see the [package vignettes](https://github.com/keberwein/blscrapeR/tree/master/vignettes).*
 
-Basic Mapping
--------------
 
-Like the the “quick functions” for requesting API data, there are two "quick" map functions, `bls_map_county()` and `bls_map_state()`. These functions are designed to work with two helper functions `get_bls_county()` and get `get_bls_state()`. Each helper function downloads recent data for unemployment rate, unemployment level, employment rate, employment level and civilian labor force. These functions do not pull data from the API, rather they pull data from text files and *do not* count against daily query limits.
+Inflation and Consumer Price Index (CPI)
+--------------
 
-**Note:** Even though the `get_bls` functions return data in the correct formats, the `bls_map` functions can be used with any data set that includes FIPS codes.
+Although there are many measures of inflation, the CPI's "Consumer Price Index for All Urban Consumers: All Items" is normally the headline inflation rate one would hear about on the news ([see FRED](https://fred.stlouisfed.org/series/CPIAUCSL)).
 
-The example below maps the current unemployment rate by county. Alaska and Hawaii have to re-located to save space.
+Getting these data from the `blscrapeR` package is easy enough:
 
-``` r
+```{r eval=FALSE}
 library(blscrapeR)
-# Grap the data in a pre-formatted data frame.
-# If no argument is passed to the function it will load the most recent month's data.
-df <- get_bls_county()
-
-#Use map function with arguments.
-map_bls(map_data = df, fill_rate = "unemployed_rate", 
-               labtitle = "Unemployment Rate by County")
+df <- bls_api("CUSR0000SA0")
+head(df)
 ```
 
-![](https://github.com/keberwein/keberwein.github.io/blob/master/images/bls_img/blscrape_docfig3.png?raw=true)
+Due to the limitations of the API, we are only able to gather twenty years of data per request. However the formula for calculating inflation is based on the 1980 dollar, so the data from the API aren't sufficient.
 
-Advanced Mapping
-----------------
+The package includes a function that collects information form the CPI beginning at 1947 and calculates inflation.
 
-What's R mapping without some interactivity? Below we’re using two additional packages, `leaflet`, which is popular for creating interactive maps and `tigris`, which allows us to download the exact shape files we need for these data and includes a few other nice tools.
+To find out the value of a January 2015 dollar in January 2023, we just make a simple function call. Looking at the `adj_dollar_value` column. We can see that the value of a 2015 dollar in 2023 was approximately $1.32.
 
-``` r
-# Leaflet map
+```{r eval=FALSE}
+df <- inflation_adjust("2015-01-01") %>%
+    arrange(desc(date))
+head(df)
+
 library(blscrapeR)
-library(tigris)
-library(leaflet)
-map.shape <- counties(cb = TRUE, year = 2015)
-df <- get_bls_county()
+# A tibble: 6 × 7
+  date       period year  value base_date  adj_dollar_value month_ovr_month_pct_change
+  <date>     <chr>  <chr> <dbl> <chr>                 <dbl>                      <dbl>
+1 2024-02-01 M02    2024   310. 2015-01-01             1.33                      0.619
+2 2024-01-01 M01    2024   308. 2015-01-01             1.32                     -0.105
+3 2023-12-01 M12    2023   307. 2015-01-01             1.31                     -0.415
+4 2023-12-01 M12    2023   309. 2015-01-01             1.32                      0.651
+5 2023-11-01 M11    2023   307. 2015-01-01             1.31                     -0.156
+6 2023-11-01 M11    2023   308. 2015-01-01             1.32                      0.317
 
-# Slice the df down to only the variables we need and rename "fips" colunm
-# so I can get a cleaner merge later.
-df <- df[, c("unemployed_rate", "fips")]
-colnames(df) <- c("unemployed_rate", "GEOID")
 
-# Merge df with spatial object.
-leafmap <- geo_join(map.shape, df, by="GEOID")
-
-# Format popup data for leaflet map.
-popup_dat <- paste0("<strong>County: </strong>", 
-                    leafmap$NAME, 
-                    "<br><strong>Value: </strong>", 
-                    leafmap$unemployed_rate)
-
-pal <- colorQuantile("YlOrRd", NULL, n = 20)
-# Render final map in leaflet.
-leaflet(data = leafmap) %>% addTiles() %>%
-    addPolygons(fillColor = ~pal(unemployed_rate), 
-                fillOpacity = 0.8, 
-                color = "#BDBDC3", 
-                weight = 1,
-                popup = popup_dat)
 ```
 
-**Note:** This is just a static image since the full map would not be as portable for the purpose of documentation.
+If we want to check our results, we can head over to the CPI [Inflation Calculator](https://data.bls.gov/cgi-bin/cpicalc.pl) on the BLS website.
 
-![](https://github.com/keberwein/keberwein.github.io/blob/master/images/bls_img/blscrape_docfig3-1.png?raw=true)
+
+### Annual Inflation Percentage Increase
+
+```{r eval=FALSE}
+library(blscrapeR)
+library(ggplot2)
+
+ggplot(data = df, aes(x = date)) + 
+    geom_line(aes(y = adj_dollar_value, color = "2015 Adjusted Dollar Value")) + 
+    labs(title = "Inflation Since 2015") + ylab("2015 Adjusted Dollar Value") +
+    theme(legend.position="top", plot.title = element_text(hjust = 0.5)) 
+
+
+ggplot(data = df, aes(x = date)) + 
+    geom_line(aes(y = month_ovr_month_pct_change, color = "MoM Pct Change")) + 
+    labs(title = "Month over Month Inflation Pct Change") + ylab("MoM Pct Change") +
+    theme(legend.position="top", plot.title = element_text(hjust = 0.5)) 
+
+```
+
+![](https://github.com/keberwein/keberwein.github.io/blob/master/images/bls_img/inflation_2015.png?raw=true)
+
+<br><br>
+
+![](https://github.com/keberwein/keberwein.github.io/blob/master/images/bls_img/mom_inflation_change.png?raw=true)
+
+
+### CPI: Tracking Escalation
+
+Another typical use of the CPI is to determine price escalation. This is especially common in escalation contracts. While there are many different ways one could calculate escalation below is a simple example. Note: the BLS recommends using non-seasonally adjusted data for escalation calculations.
+
+Suppose we want the price escalation of $100 investment we made in January 2014 to February 2015:
+
+**Disclaimer:** Escalation is normally formulated by lawyers and bankers, the author(s) of this package are neither, so the above should only be considered a code example.
+
+```{r eval=FALSE}
+library(blscrapeR)
+library(dplyr)
+df <- bls_api("CUSR0000SA0",
+              startyear = 2014, endyear = 2015)
+head(df)
+
+# A tibble: 6 × 6
+   year period periodName value footnotes seriesID   
+  <dbl> <chr>  <chr>      <dbl> <chr>     <chr>      
+1  2015 M12    December    238. ""        CUSR0000SA0
+2  2015 M11    November    238. ""        CUSR0000SA0
+3  2015 M10    October     238. ""        CUSR0000SA0
+4  2015 M09    September   237. ""        CUSR0000SA0
+5  2015 M08    August      238. ""        CUSR0000SA0
+6  2015 M07    July        238. ""        CUSR0000SA0
+
+# Set base value.
+base_value <- 100
+
+# Get CPI from base period (January 2014).
+base_cpi <- subset(df, year==2014 & periodName=="January", select = "value")
+
+# Get the CPI for the new period (February 2015).
+new_cpi <- subset(df, year==2015 & periodName=="February", select = "value")
+
+# Calculate the updated value of our $100 investment.
+round((base_value / base_cpi) * new_cpi, 2)
+   value
+1 100.02
+
+# Huzzah! We made 2 cents on our $100 investment.
+```
+
+
+

@@ -1,3 +1,26 @@
+# blscrapeR 4.0.3 (2026-04-06)
+
+## Bug Fixes
+
+* Removed broken `beta.bls.gov` hyperlinks in `README.md` and vignettes that were failing CRAN checks.
+
+# blscrapeR 4.0.2 (2026-04-01)
+
+## Enhancements
+
+* Updated deprecated `tidyr::spread()` usages to `tidyr::pivot_wider()`.
+* Removed outdated `.travis.yml` CI configuration in favor of GitHub Actions.
+
+## Bug Fixes
+
+* Fixed `inflation_adjust()` returning all zeros for `month_ovr_month_pct_change`. The function was using `stats::lag()` instead of `dplyr::lag()`, which shifts time-series attributes rather than actual values.
+
+* Fixed `inflation_adjust()` crashing with a error when the BLS API request fails (e.g. invalid API key). The function now falls back to internally cached CPI data with a warning, or stops with a clear error message if the requested base date is beyond the cached data range.
+
+* Resolved a data duplication bug in `inflation_adjust()` that occurred when merging live API results with cached internal data.
+
+* Updated `inflation_adjust()` to use standard `round(..., 2)` for inflation-adjusted dollar values.
+
 # blscrapeR 4.0.1
 
 ## Bug Fixes

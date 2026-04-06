@@ -12,7 +12,7 @@
 
 <meta name="author" content="Kris Eberwein" />
 
-<meta name="date" content="2024-03-14" />
+<meta name="date" content="2026-04-06" />
 
 <title>BLS API Pay and Benefits</title>
 
@@ -40,7 +40,15 @@ ul.task-list{list-style: none;}
 </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -113,13 +121,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -325,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">BLS API Pay and Benefits</h1>
 <h4 class="author">Kris Eberwein</h4>
-<h4 class="date">2024-03-14</h4>
+<h4 class="date">2026-04-06</h4>
 
 
 
@@ -338,9 +353,8 @@ Calculations website</a>. The selected examples below do not include all
 series or databases.</p>
 <p>##Catagories you will find useful are:</p>
 <ul>
-<li><p><a href="https://beta.bls.gov/dataQuery/find?fq=survey:%5Boe%5D&amp;q=oe">OES</a>
-(Occupational Employment Statistics) includes employment, benefits, and
-wages segmented by metro area and occupation.</p></li>
+<li><p>OES (Occupational Employment Statistics) includes employment,
+benefits, and wages segmented by metro area and occupation.</p></li>
 <li><p><a href="https://data.bls.gov/cgi-bin/surveymost?cm">Employer
 Cost for Employee Compensation</a></p></li>
 <li><p><a href="https://data.bls.gov/cgi-bin/surveymost?nb">National
@@ -385,7 +399,7 @@ could run the following script.</p>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">bls_api</span>(<span class="fu">c</span>(<span class="st">&quot;CMU1030000000000D&quot;</span>, <span class="st">&quot;CMU1030000000000P&quot;</span>))</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Spread series ids and rename columns to human readable format.</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>df.sp <span class="ot">&lt;-</span> <span class="fu">spread</span>(df, seriesID, value) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>df.sp <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(df, <span class="at">names_from =</span> seriesID, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="st">&quot;hourly_cost&quot;</span><span class="ot">=</span>CMU1030000000000D, <span class="st">&quot;pct_of_wages&quot;</span><span class="ot">=</span>CMU1030000000000P) <span class="sc">%&gt;%</span></span>
 <span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="co"># Percentages are represented as floating integers. Fix this to avoid confusion.</span></span>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pct_of_wages =</span> pct_of_wages<span class="sc">*</span><span class="fl">0.01</span>)</span>
@@ -401,7 +415,7 @@ insurance through their employers.</p>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">bls_api</span>(<span class="fu">c</span>(<span class="st">&quot;NBU10500000000000033030&quot;</span>, <span class="st">&quot;NBU11500000000000028178&quot;</span>))</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Spread series ids and rename columns to human readable format.</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>df.sp <span class="ot">&lt;-</span> <span class="fu">spread</span>(df, seriesID, value) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>df.sp <span class="ot">&lt;-</span> <span class="fu">pivot_wider</span>(df, <span class="at">names_from =</span> seriesID, <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="st">&quot;pct_paid_vacation&quot;</span><span class="ot">=</span>NBU10500000000000033030, <span class="st">&quot;pct_health_ins&quot;</span><span class="ot">=</span>NBU11500000000000028178) <span class="sc">%&gt;%</span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="co"># Value data are in whole numbers but represent percentages. Fix this to avoid confusion.</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pct_of_wages =</span> pct_of_wages<span class="sc">*</span><span class="fl">0.01</span>, <span class="at">pct_health_ins =</span> pct_health_ins<span class="sc">*</span><span class="fl">0.01</span>)</span>
